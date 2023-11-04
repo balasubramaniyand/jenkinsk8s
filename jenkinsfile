@@ -1,0 +1,41 @@
+pipeline {
+    agent any
+
+    stages {
+        stage('Git pull the code for scm') {
+            steps {
+                git 'https://github.com/balasubramaniyand/jenkinsk8s.git'
+            }
+        }
+        stage('Kubectl apply'){
+            steps{
+                sh ' sudo kubectl apply -f pod.yml'
+            }
+        }
+        stage('Kubectl get pod'){
+            steps{
+                sh' sudo kubectl get pods'
+            }
+        }
+        stage('Kubectl delete pod'){
+            steps{
+                sh'sudo kubectl delete pod your-pod-name'
+            }
+        }
+        stage('Kubectl load balancer'){
+            steps{
+                sh'sudo kubectl apply -f deployment.yml'
+            }
+        }
+        stage('Kubectl get pods -o wide'){
+            steps{
+                sh'sudo kubectl get pods -o wide'
+}
+}
+stage('Kubectl delete cluster'){
+    steps{
+        sh'sudo kops delete cluster --name bala.k8s.local --yes'
+    }
+}
+}
+}
